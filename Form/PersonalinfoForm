@@ -1,0 +1,253 @@
+﻿using SmartRentalHub.Class;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+//firebase
+using FireSharp.Config;
+using FireSharp.Interfaces;
+using FireSharp.Response;
+
+
+using Firebase.Storage;
+using Google.Cloud.Firestore;
+using System.Security.Cryptography;
+
+
+namespace SmartRentalHub
+{
+    public partial class PersonalinfoForm : Form
+    {
+        public event EventHandler GoBackToAccountForm;
+
+        #region ConnectionToFirebase
+        IFirebaseConfig config = new FirebaseConfig
+        {
+            AuthSecret = "SeWHh7b6gcCV2QZqk5vVa3t3gX72UaAxKdjLI9FW",
+            BasePath = "https://smartrental-hub-default-rtdb.firebaseio.com/"
+
+        };
+
+        IFirebaseClient client;
+        #endregion
+
+        //FirestoreDb db = FirestoreDb.Create("LMS1VyX1JR4htGVjwLf8");
+        //FirebaseStorage storage; // Declare storage here
+
+       
+
+        string username = MaintainUsername.Username;
+
+        public PersonalinfoForm()
+        {
+            InitializeComponent();
+            UsernameTbx.Text = username;
+            LoadUserProfileDetails();
+            // var storage = new FirebaseStorage("gs://smartrental-hub.appspot.com");
+            // FirestoreConnection();
+            AccountBtn.Click += AccountBtn_Click1;
+
+        }
+
+        private void AccountBtn_Click1(object sender, EventArgs e)
+        {
+           
+        }
+
+        internal async Task<UserData> RetrieveUserProfile(string Username)
+        {
+            // Connect to Firestore
+            var db = FirestoreHelper.database;
+
+            // Get the user's document
+            DocumentReference docRef = db.Collection("UserData").Document(Username);
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+
+            if (snapshot.Exists)
+            {
+                // Convert the DocumentSnapshot to a UserProfile object
+                UserData userdata = snapshot.ConvertTo<UserData>();
+                return userdata;
+            }
+            else
+            {
+                Console.WriteLine("User does not exist!");
+                return null;
+            }
+        }
+        private void ProfileForm_Load(object sender, EventArgs e)
+        {
+            //FIrebase
+            /* client = new FireSharp.FirebaseClient(config);
+
+             if (client != null)
+                 MessageBox.Show("Connection is good");
+
+             else
+                 MessageBox.Show("Connection is not good");*/
+            LoadUserProfileDetails();
+
+        }
+        
+        private async void LoadUserProfileDetails()
+        {
+            //get user details in firestore
+            UserData userdata = await RetrieveUserProfile(UsernameTbx.Text);
+
+            // Check if userdata is not null before accessing its properties
+            if (userdata != null)
+            {
+                // Update the form fields with the user profile details
+                
+
+                FirstNameTbx.Text = userdata.Firstname;
+                LastNameTbx.Text = userdata.Lastname;
+                AddressTbx.Text = userdata.Address;
+                PhoneNumberTbx.Text = userdata.PhoneNumber;
+                EmailTbx.Text = userdata.Email;
+
+
+
+                // Load the profile picture
+                var imagePath = userdata.ProfilePicturePath;
+                if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
+                {
+                    pictureBox1.Image = Image.FromFile(imagePath);
+                }
+            }
+            else
+            {
+                Console.WriteLine("User profile not found!");
+            }
+        }
+
+
+
+        private string imagePath;
+        private void BrowseBtn_Click(object sender, EventArgs e)
+        {
+            
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Select Image";
+            ofd.Filter = "Image Files (*.jpg) | *.jpg";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                Image img = new Bitmap(ofd.FileName);
+                pictureBox1.Image = img.GetThumbnailImage(224, 148, null, new IntPtr());
+            }
+        }
+
+
+
+        private  void InsertBtn_Click(object sender, EventArgs e)
+        {
+            //await 
+            //UploadProfilePicture(imagePath);
+            InsertPicture();
+
+        }
+        internal async void InsertPicture()
+        {
+            IFirebaseConfig config = new FirebaseConfig
+            {
+                AuthSecret = "SeWHh7b6gcCV2QZqk5vVa3t3gX72UaAxKdjLI9FW",
+                BasePath = "gs://smartrental-hub.appspot.com"
+
+            };
+
+            IFirebaseClient clientStorage = new FireSharp.FirebaseClient(config);
+
+            //gs://smartrental-hub.appspot.com
+            MemoryStream ms = new MemoryStream();
+            pictureBox1.Image.Save(ms, ImageFormat.Jpeg);
+
+            byte[] a = ms.GetBuffer();
+
+            string output = Convert.ToBase64String(a);
+
+            var data = new ImageModal
+            {
+                Img = output
+            };
+
+            SetResponse response = await clientStorage.SetTaskAsync("User Profile Picture/", data);
+            
+            ImageModal result = response.ResultAs<ImageModal>();
+            MessageBox.Show("Successful");
+        }
+        
+
+       
+
+        /*public async Task UploadProfilePicture(string imagePath)
+        {
+            using (var stream = File.Open(imagePath, FileMode.Open))
+            {
+                
+                    var fileName = $"{UsernameTbx.Text}_profile.jpg"; // Unique file name
+                    var task = storage
+                        .Child("User Profile Picture/") // All profile pictures are stored here
+                        .Child(UsernameTbx.Text) // Each user has their own folder
+                        .Child(fileName) // The name of the file
+                        .PutAsync(stream);
+
+                    var downloadUrl = await task;
+                    // Save the downloadUrl to Firestore as the user's profile picture.
+
+                    // Get a reference to the Firestore database
+                    FirestoreConnection();
+
+                    // Get a reference to the user's document in Firestore
+                    var docRef = db.Collection("UsersData").Document(UsernameTbx.Text);
+
+                    // Update the user's profile picture URL in Firestore
+                    await docRef.UpdateAsync("ProfilePicture", downloadUrl);
+                
+
+            }
+        }*/
+
+        private async void UpdateDetails()
+        {
+            DocumentReference docref = FirestoreHelper.database.Collection("UserData").Document(UsernameTbx.Text);
+            Dictionary<string, object> data = new Dictionary<string, object>()
+            {
+                {"Firstname", FirstNameTbx.Text },
+                {"Lastname", LastNameTbx.Text },
+                {"Email", EmailTbx.Text },
+                {"Address", AddressTbx.Text },
+                {"PhoneNumber", PhoneNumberTbx.Text }
+
+
+            };
+            DocumentSnapshot snap = await docref.GetSnapshotAsync();
+            if (snap.Exists)
+            {
+                await docref.UpdateAsync(data);
+            }
+
+
+
+        }
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateDetails();
+        }
+
+        private void AccountBtn_Click(object sender, EventArgs e)
+        {
+            
+            // Raise the event when the button is clicked
+            GoBackToAccountForm?.Invoke(this, EventArgs.Empty);
+        }
+    }
+}
