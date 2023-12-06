@@ -25,6 +25,12 @@ using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using static Google.Cloud.Firestore.V1.StructuredQuery.Types;
 
+using Firebase.Storage;
+
+using FirebaseAdmin;
+using Firebase.Database;
+
+
 //using System.Json;
 
 namespace SmartRentalHub
@@ -134,6 +140,7 @@ namespace SmartRentalHub
             return null;
         }
 
+        
         async void AddToListOfObjects(string start, string end)
         {
             int roomNumber = 1;
@@ -164,7 +171,7 @@ namespace SmartRentalHub
                 // Convert the profile picture to a base64 string
                 string roomPicBase64 = ConvertImageToBase64(pictureBox1.Image);
                 roomPicBase64 += ConvertImageToBase64(pictureBox2.Image);
-                //roomPicBase64 += ConvertImageToBase64(pictureBox3.Image);
+                roomPicBase64 += ConvertImageToBase64(pictureBox3.Image);
 
                 // Log the base64 string in output
                 Console.WriteLine($"RoomPicBase64: {roomPicBase64}");
@@ -210,7 +217,16 @@ namespace SmartRentalHub
 
                 if (!string.IsNullOrEmpty(roomPicBase64))
                 {
-                    List1.Add("Room_PIc", roomPicBase64);
+                    /*DocumentReference docRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text).Collection("Rooms").Document(documentName);
+                    CollectionReference subRef = docRef.Collection("Pictures"); // Get a subcollection reference
+                    Dictionary<string, object> picture = new Dictionary<string, object>
+                    {
+                        {"url", "roomPicBase64"}
+                        
+                    };
+                    await subRef.AddAsync(picture); // Add a document to the subcollection
+                    */
+                   List1.Add("Room_PIc", roomPicBase64);
                 }
 
                 List<string> checkedItems = new List<string>();
@@ -302,21 +318,7 @@ namespace SmartRentalHub
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void gMapControl1_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
+       
         private async void gMapControl1_MouseClick_1(object sender, MouseEventArgs e)
         {
             // Check if the left mouse button was clicked
@@ -397,10 +399,10 @@ namespace SmartRentalHub
 
                     ConvertBase64ToImageAndDisplay(base64Strings);
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+                //pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
                 //pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox1.BackgroundImage = null;
-                pictureBox2.BackgroundImage = null;
+                //pictureBox2.BackgroundImage = null;
                //  pictureBox3.BackgroundImage = null;
             }
             }
@@ -447,22 +449,10 @@ namespace SmartRentalHub
             }
         }
 
-        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        private void gMapControl1_Load(object sender, EventArgs e)
         {
 
         }
-
-        /*public static async Task<string> GetAddressForCoordinates(double latitude, double longitude)
-        {
-            HttpClient httpClient = new HttpClient { BaseAddress = new Uri("http://nominatim.openstreetmap.org") };
-            HttpResponseMessage httpResult = await httpClient.GetAsync(String.Format("reverse?format=json&lat={0}&lon={1}", latitude, longitude));
-            JsonObject jsonObject = JsonObject.Parse(await httpResult.Content.ReadAsStringAsync());
-            return jsonObject.GetNamedObject("address").GetNamedString("road");
-        }
-        string address = await GetAddressForCoordinates(latitude, longitude);
-
-        richTextBox2.Text = address; //so is this correct?*/
-
     }
 }
 

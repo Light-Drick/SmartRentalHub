@@ -52,6 +52,7 @@
             this.DescriptionCmbx = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.BathroomsCmbx = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -76,6 +77,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -123,7 +125,6 @@
             this.monthCalendar1.MaxSelectionCount = 31;
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 9;
-            this.monthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar1_DateChanged);
             // 
             // label4
             // 
@@ -312,7 +313,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1898, 662);
             this.panel1.TabIndex = 38;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // DescriptionRichTextBox3
             // 
@@ -348,21 +348,32 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Controls.Add(this.pictureBox3);
             this.panel2.Controls.Add(this.pictureBox2);
+            this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Location = new System.Drawing.Point(1419, 30);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(443, 558);
             this.panel2.TabIndex = 68;
             // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImage = global::SmartRentalHub.Properties.Resources.default_room_pic;
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox3.Location = new System.Drawing.Point(3, 376);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(437, 179);
+            this.pictureBox3.TabIndex = 16;
+            this.pictureBox3.TabStop = false;
+            // 
             // pictureBox2
             // 
             this.pictureBox2.BackgroundImage = global::SmartRentalHub.Properties.Resources.default_room_pic;
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox2.Location = new System.Drawing.Point(3, 189);
+            this.pictureBox2.Location = new System.Drawing.Point(3, 190);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(437, 179);
-            this.pictureBox2.TabIndex = 65;
+            this.pictureBox2.TabIndex = 15;
             this.pictureBox2.TabStop = false;
             // 
             // BathroomsCmbx
@@ -520,7 +531,7 @@
             this.gMapControl1.Size = new System.Drawing.Size(367, 223);
             this.gMapControl1.TabIndex = 51;
             this.gMapControl1.Zoom = 0D;
-            this.gMapControl1.Load += new System.EventHandler(this.gMapControl1_Load_1);
+            this.gMapControl1.Load += new System.EventHandler(this.gMapControl1_Load);
             this.gMapControl1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gMapControl1_MouseClick_1);
             // 
             // DescriptionCheckBox1
@@ -583,7 +594,6 @@
             this.NameOfSpaceTbx.Name = "NameOfSpaceTbx";
             this.NameOfSpaceTbx.Size = new System.Drawing.Size(194, 22);
             this.NameOfSpaceTbx.TabIndex = 0;
-            this.NameOfSpaceTbx.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // AddSpaceForm
             // 
@@ -598,6 +608,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
@@ -644,10 +655,11 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox GuestCmbx;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.ComboBox DescriptionCmbx;
         private System.Windows.Forms.RichTextBox DescriptionRichTextBox3;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
