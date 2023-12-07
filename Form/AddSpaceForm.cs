@@ -26,7 +26,6 @@ using Newtonsoft.Json.Linq;
 using static Google.Cloud.Firestore.V1.StructuredQuery.Types;
 
 using Firebase.Storage;
-
 using FirebaseAdmin;
 using Firebase.Database;
 

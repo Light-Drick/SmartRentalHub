@@ -119,6 +119,7 @@
             this.ProfilePic.Location = new System.Drawing.Point(457, 102);
             this.ProfilePic.Name = "ProfilePic";
             this.ProfilePic.Size = new System.Drawing.Size(224, 148);
+            this.ProfilePic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.ProfilePic.TabIndex = 14;
             this.ProfilePic.TabStop = false;
             // 
@@ -195,7 +196,7 @@
             // 
             // Editbtn
             // 
-            this.Editbtn.Location = new System.Drawing.Point(141, 183);
+            this.Editbtn.Location = new System.Drawing.Point(550, 265);
             this.Editbtn.Name = "Editbtn";
             this.Editbtn.Size = new System.Drawing.Size(75, 23);
             this.Editbtn.TabIndex = 25;

@@ -18,26 +18,34 @@ using FireSharp.Response;
 using GoogleApi.Entities.Translate.Detect.Response;
 using Google.Type;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Net.Mail;
+using System.Net;
 
 namespace SmartRentalHub
 {
     public partial class SignUpForm : Form
     {
+        private string activationCode;
+
         #region ConnectionToFirebaseDatabase
-       /* IFirebaseConfig config = new FirebaseConfig
-        {
-            AuthSecret = "SeWHh7b6gcCV2QZqk5vVa3t3gX72UaAxKdjLI9FW",
-            BasePath = "https://smartrental-hub-default-rtdb.firebaseio.com/"
+        /* IFirebaseConfig config = new FirebaseConfig
+         {
+             AuthSecret = "SeWHh7b6gcCV2QZqk5vVa3t3gX72UaAxKdjLI9FW",
+             BasePath = "https://smartrental-hub-default-rtdb.firebaseio.com/"
 
-        };
+         };
 
-        IFirebaseClient client;
-       */
+         IFirebaseClient client;
+        */
         #endregion
 
         public SignUpForm()
         {
             InitializeComponent();
+            activationCode = GenerateRandomCode();
+            ActivationCodeTbx.Enabled = false;
+            SubmitBtn.Enabled = true;
+            SignUpBtn.Enabled = false;  
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -67,7 +75,7 @@ namespace SmartRentalHub
         private void GoBackBtn_Click(object sender, EventArgs e)
         {
             LogInForm login = new LogInForm();
-            login.ShowDialog();
+            login.Show();
             this.Hide();
             Close();
         }
@@ -75,6 +83,20 @@ namespace SmartRentalHub
 
         private async void SignUpBtn_Click(object sender, EventArgs e)
         {
+            // Check if ActivationCodeTbx is filled
+            if (string.IsNullOrWhiteSpace(ActivationCodeTbx.Text))
+            {
+                MessageBox.Show("Please enter the activation code.");
+                return;
+            }
+
+            // Check if activation code matches
+            if (ActivationCodeTbx.Text != activationCode)
+            {
+                MessageBox.Show("Invalid activation code. Please try again.");
+                return;
+            }
+
             #region firestore
             var db = FirestoreHelper.database;
 
@@ -90,8 +112,9 @@ namespace SmartRentalHub
                 DocumentReference docRef = db.Collection("UserData").Document(data.Username);
                 await docRef.SetAsync(data);
                 MessageBox.Show("Success");
-
-                return;
+                LogInForm newlogin = new LogInForm();
+                this.Hide();
+                newlogin.Show();    
             }
             #endregion
 
@@ -141,9 +164,88 @@ namespace SmartRentalHub
             #endregion
         }
 
+        private void SubmitBtn_Click(object sender, EventArgs e)
+        {
+            // Check if all required fields are filled
+            if (string.IsNullOrWhiteSpace(FirstNameTbx.Text) ||
+                string.IsNullOrWhiteSpace(LastNameTbx.Text) ||
+                string.IsNullOrWhiteSpace(PhoneNumberTbx.Text) ||
+                string.IsNullOrWhiteSpace(EmailTbx.Text) ||
+                string.IsNullOrWhiteSpace(PasswordTbx.Text) ||
+                string.IsNullOrWhiteSpace(UsernameTbx.Text))
+            {
+                MessageBox.Show("Please fill out all the required fields.");
+                return;
+            }
+
+            // Send activation code to the user's email
+            SendCodeToEmail(EmailTbx.Text.Trim(), activationCode);
+            Timer timer = new Timer();
+            timer.Interval = 5 * 60 * 1000;
+            timer.Tick += Timer_Tick;
+            timer.Start();
+            MessageBox.Show("An activation code is now sent to your email");
+            
+
+            // Enable ActivationCodeTbx and SubmitBtn
+            BeginSignUp(true);
+
+        }
+
+        private string GenerateRandomCode()
+        {
+            Random random = new Random();
+            int code = random.Next(100000, 999999);
+            return code.ToString();
+        }
+
+        private void SendCodeToEmail(string email, string code)
+        {
+            string yourEmail = "kyledowiromero@gmail.com";
+            string yourAppPassword = "morw prqi gbyk domc";
+
+            using (var client = new SmtpClient("smtp.gmail.com"))
+            {
+                client.Port = 587;
+                client.Credentials = new NetworkCredential(yourEmail, yourAppPassword);
+                client.EnableSsl = true;
+
+                var message = new MailMessage(yourEmail, email)
+                {
+                    Subject = "Activation Code",
+                    Body = $"Your activation code is: {code} and is only available for 5 minutes"
+                };
+
+                client.Send(message);
+            }
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            MessageBox.Show("Code expired. Please request a new one.");
+            ResetForm();
+            BeginSignUp(false);
+        }
+
+        private void ResetForm()
+        {
+            ClearTextBoxes(); 
+            ActivationCodeTbx.Clear();
+            SubmitBtn.Enabled = true;
+            SignUpBtn.Enabled = false;
+            ActivationCodeTbx.Enabled = false;        
+        }
+
+        private void BeginSignUp(bool isVisible)
+        {
+            ActivationCodeTbx.Enabled = isVisible;
+            SignUpBtn.Enabled = isVisible;
+            SubmitBtn.Enabled = false;
+        }
+
 
         //firestore
-         private UserData GetWriteData()
+        private UserData GetWriteData()
          {
 
              string firstname = FirstNameTbx.Text.Trim();
@@ -197,6 +299,8 @@ namespace SmartRentalHub
                 MessageBox.Show("Connection is not good");
             */
         }
+
+        
     }
 
 }
