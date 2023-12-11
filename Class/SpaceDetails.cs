@@ -13,33 +13,51 @@ namespace SmartRentalHub.Class
         [FirestoreProperty]
         public string Username { get; set; }
 
-        [FirestoreProperty]
-        public string Location { get; set; }
-
-        [FirestoreProperty]
-        public string Type { get; set; }
+        public string RoomType { get; set; }
 
 
         [FirestoreProperty]
         public string Price { get; set; }
 
-        [FirestoreProperty]
-        public string AvailableDates { get; set; }
-
+   
         [FirestoreProperty]
         public string Amenities { get; set; }
         [FirestoreProperty]
         public string PhoneNumber { get; set; }
         [FirestoreProperty]
-        public string NameOfSpace { get; set; }
+        public string NameTitleOfSpace { get; set; }
         [FirestoreProperty]
         public string StartDate { get; set; }
         [FirestoreProperty]
         public string EndDate { get; set; }
         [FirestoreProperty]
-        public string Rules { get; set; }
+        public string RulesConditions{ get; set; }
+
 
         [FirestoreProperty]
-        public string RoomPic { get; set; }
+        public double Latitude { get; set; }
+        [FirestoreProperty]
+        public double Longitude { get; set; }
+        [FirestoreProperty]
+        public string Address { get; set; }
+
+        [FirestoreProperty]
+        public string Accommodation { get; set; }
+
+        [FirestoreProperty]
+        public string BathRoom { get; set; }
+
+        [FirestoreProperty]
+        public string Bed { get; set; }
+
+        [FirestoreProperty]
+        public string Bedroom { get; set; }
+
+        [FirestoreProperty]
+        public string Guest { get; set; }
+
+
+
+
     }
 }
