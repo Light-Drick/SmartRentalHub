@@ -28,18 +28,6 @@ namespace SmartRentalHub
     {
         public event EventHandler GoBackToAccountForm;
 
-        #region ConnectionToFirebase
-        IFirebaseConfig config = new FirebaseConfig
-        {
-            AuthSecret = "SeWHh7b6gcCV2QZqk5vVa3t3gX72UaAxKdjLI9FW",
-            BasePath = "https://smartrental-hub-default-rtdb.firebaseio.com/"
-
-        };
-
-        IFirebaseClient client;
-        #endregion
-
-         
         string username = MaintainUsername.Username;
 
         public PersonalinfoForm()
@@ -48,8 +36,9 @@ namespace SmartRentalHub
             UsernameTbx.Text = username;
             Noteditmode();
             LoadUserProfileDetails();
-            
-            FirestoreConnection();
+
+            //FirestoreConnection();
+            FirestoreHelper.SetEnvironmentVariable();
             AccountBtn.Click += AccountBtn_Click;
 
 
@@ -57,7 +46,8 @@ namespace SmartRentalHub
 
         private void FirestoreConnection()
         {
-            FirestoreDb db = FirestoreDb.Create("LMS1VyX1JR4htGVjwLf8");
+            //FirestoreDb db = FirestoreDb.Create("LMS1VyX1JR4htGVjwLf8");
+            //FirestoreHelper.SetEnvironmentVariable();
         }
 
         internal async Task<UserData> RetrieveUserProfile(string Username)
@@ -65,10 +55,10 @@ namespace SmartRentalHub
             try 
             {
                 // Connect to Firestore
-                var db = FirestoreHelper.database;
+                //var db = FirestoreHelper.database;
 
                 // Get the user's document
-                DocumentReference docRef = db.Collection("UserData").Document(Username);
+                DocumentReference docRef = FirestoreHelper.database.Collection("UserData").Document(Username);
                 DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
                 if (snapshot.Exists)
@@ -109,8 +99,6 @@ namespace SmartRentalHub
             if (userdata != null)
             {
                 // Update the form fields with the user profile details
-                
-
                 FirstNameTbx.Text = userdata.Firstname;
                 LastNameTbx.Text = userdata.Lastname;
                 AddressTbx.Text = userdata.Address;

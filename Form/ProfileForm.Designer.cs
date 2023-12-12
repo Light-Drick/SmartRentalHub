@@ -180,7 +180,7 @@
             this.AccountBtn.Name = "AccountBtn";
             this.AccountBtn.Size = new System.Drawing.Size(75, 23);
             this.AccountBtn.TabIndex = 23;
-            this.AccountBtn.Text = "Account";
+            this.AccountBtn.Text = "dis";
             this.AccountBtn.UseVisualStyleBackColor = true;
             this.AccountBtn.Click += new System.EventHandler(this.AccountBtn_Click);
             // 
