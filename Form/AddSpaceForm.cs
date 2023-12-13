@@ -240,6 +240,9 @@ namespace SmartRentalHub
                 CollectionReference roomsRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text).Collection("Rooms");
 
                 DocumentReference roomRef = roomsRef.Document(documentName);
+                // Add a temporary field to the document //solves the unreadable Room details of owner
+                await roomRef.SetAsync(new { TempField = "temp" });
+
 
                 // Convert each picture to a base64 string
                 string roomPic1Base64 = ConvertImageToBase64(pictureBox1.Image);
@@ -301,6 +304,10 @@ namespace SmartRentalHub
 
                     
                     await roomsRef.Document(documentName).SetAsync(Data1);
+
+
+                    // Delete the temporary field from the document
+                    //await roomRef.UpdateAsync("TempField", FieldValue.Delete);
 
                     MessageBox.Show("Added succesfully!");
 

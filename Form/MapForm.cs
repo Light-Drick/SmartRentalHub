@@ -89,14 +89,9 @@ namespace SmartRentalHub
 
         public async Task GetLocationsFromFirestore()
         {
-            List<PointLatLng> locations = new List<PointLatLng>();
-
             try
             {
-                
                 var db = FirestoreHelper.database;
-
-
                 CollectionReference spaceForRentRef = FirestoreHelper.database.Collection("Space for rent");
                 QuerySnapshot ownersSnapshot = await spaceForRentRef.GetSnapshotAsync();
 
@@ -108,17 +103,15 @@ namespace SmartRentalHub
                     foreach (DocumentSnapshot roomSnapshot in roomsSnapshot.Documents)
                     {
                         Dictionary<string, object> roomData = roomSnapshot.ToDictionary();
-                        if (roomData.ContainsKey("Latitude") && roomData.ContainsKey("Longitude"))
+                        //if (roomData.ContainsKey("Latitude") && roomData.ContainsKey("Longitude") && roomData.ContainsKey("Name/Title of Space" && roomData.ContainsKey("Price per night" && roomData.ContainsKey("Username")
                         {
                             double lat, lng;
                             if (double.TryParse(roomData["Latitude"].ToString(), out lat) && double.TryParse(roomData["Longitude"].ToString(), out lng))
                             {
-                                locations.Add(new PointLatLng(lat, lng));
-
+                                // Create a marker for each location
+                                AddPinToMap(new PointLatLng(lat, lng), roomData);
                             }
                         }
-                        // Pass the roomData variable to the AddPinsToMap method
-                        AddPinsToMap(locations, roomData);
                     }
                 }
             }
@@ -132,22 +125,22 @@ namespace SmartRentalHub
 
 
         // Modify the AddPinsToMap method to accept a Dictionary<string, object> parameter
-        public void AddPinsToMap(List<PointLatLng> locations, Dictionary<string, object> roomData)
+        public void AddPinToMap(PointLatLng location, Dictionary<string, object> roomData)
         {
-            MessageBox.Show($"Number of locations to add: {locations.Count}");
             var markers = new GMapOverlay("markers");
-            foreach (var location in locations)
-            {
-                var marker = new GMarkerGoogle(location, GMarkerGoogleType.red_pushpin);
-                // Get the latitude and longitude values from the roomData parameter
-                double lat = (double)roomData["Latitude"];
-                double lng = (double)roomData["Longitude"];
+            var marker = new GMarkerGoogle(location, GMarkerGoogleType.red_pushpin);
 
-                // Set the tooltip text with the latitude and longitude values
-                marker.ToolTipText = $"Latitude: {lat}, \nLongitude: {lng}";
-                
-                markers.Markers.Add(marker);
-            }
+            // Get the latitude and longitude values from the roomData parameter
+            double lat = (double)roomData["Latitude"];
+            double lng = (double)roomData["Longitude"];
+            double price = (double)roomData["Price"];
+
+
+
+            // Set the tooltip text with the latitude and longitude values
+            marker.ToolTipText = $"Latitude: {lat}, \nLongitude: {lng}, Price: {price}";
+
+            markers.Markers.Add(marker);
             gMapControl1.Overlays.Add(markers);
             gMapControl1.Refresh();
         }

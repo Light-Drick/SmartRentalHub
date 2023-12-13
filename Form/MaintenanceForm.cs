@@ -21,29 +21,54 @@ namespace SmartRentalHub
 
         private async void SubmitMaintenanceBtn_Click(object sender, EventArgs e)
         {
-            // Get a reference to the Firestore database
-            CollectionReference MaintenanceRef = FirestoreHelper.database.Collection("Space for rent").Document(OwnerUserNameTbx.Text).Collection("Maintenance request");
+            try
+            {
+                string ownerUsername = OwnerUserNameTbx.Text;
 
-            // Get the current highest number
-            Query query = MaintenanceRef.OrderByDescending("__name__").Limit(1);
-            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
-            DocumentSnapshot lastDocument = querySnapshot.Documents[0];
-            string lastDocumentName = lastDocument.Id;
+                // Get the user's document from the "Space for rent" collection
+                DocumentReference docRef = FirestoreHelper.database.Collection("Space for rent").Document(ownerUsername);
+                DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+
+                if (snapshot.Exists)
+                {
+                    // Get a reference to the Firestore database
+                    CollectionReference MaintenanceRef = FirestoreHelper.database.Collection("Space for rent").Document(ownerUsername).Collection("Maintenance request");
+
+                    // Get the current highest number
+                    Query query = MaintenanceRef.OrderByDescending("__name__").Limit(1);
+                    QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+                    DocumentSnapshot lastDocument = querySnapshot.Documents[0];
+                    string lastDocumentName = lastDocument.Id;
 
 
-            // Parse the number from the document name and increment it
-            int number = int.Parse(lastDocumentName.Replace("maintenance_", ""));
-            number++;
+                    // Parse the number from the document name and increment it
+                    int number = int.Parse(lastDocumentName.Replace("maintenance_", ""));
+                    number++;
 
-            // Create the new document with the incremented number
-            DocumentReference newDocument = MaintenanceRef.Document("maintenance_" + number);
+                    // Create the new document with the incremented number
+                    DocumentReference newDocument = MaintenanceRef.Document("maintenance_" + number);
 
-            MaintenanceCollection();
+                    MaintenanceCollection();
+                }
+
+                else
+                {
+                    // If the user does not exist, show a message to reenter the username
+                    MessageBox.Show("Please reenter the owner username because that username is not an owner"
+                        +" of any spaces for rent. ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void MaintenanceForm_Load(object sender, EventArgs e)
         {
-            FirestoreHelper.SetEnvironmentVariable();
         }
 
         private void MaintenanceCollection()

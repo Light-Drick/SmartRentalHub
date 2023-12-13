@@ -280,7 +280,10 @@ namespace SmartRentalHub
             Editmode();
         }
 
-        
+        private void UsernameTbx_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 

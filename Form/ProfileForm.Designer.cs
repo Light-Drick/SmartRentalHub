@@ -157,6 +157,7 @@
             this.UsernameTbx.Name = "UsernameTbx";
             this.UsernameTbx.Size = new System.Drawing.Size(100, 22);
             this.UsernameTbx.TabIndex = 19;
+            this.UsernameTbx.TextChanged += new System.EventHandler(this.UsernameTbx_TextChanged);
             // 
             // AddressTbx
             // 

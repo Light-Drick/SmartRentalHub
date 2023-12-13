@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks;*/
 using System.Windows.Forms;
 using Google.Cloud.Firestore;
 using SmartRentalHub.Class;
@@ -13,7 +13,8 @@ using SmartRentalHub.Class;
 
 /*using FireSharp.Config;
 using FireSharp.Interfaces;
-*/using FireSharp.Response;
+using FireSharp.Response;
+*/
 
 //using Firebase;
 
@@ -75,8 +76,6 @@ namespace SmartRentalHub
 
                             this.Hide();
 
-                            // After successful login
-                            //MaintainUsername.Username["Username"] = "user's username";
                             MaintainUsername.Username = UsernameTbx.Text;
 
                         }
