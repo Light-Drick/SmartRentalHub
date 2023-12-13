@@ -16,7 +16,7 @@ namespace SmartRentalHub
         public MaintenanceForm()
         {
             InitializeComponent();
-            FirestoreHelper.SetEnvironmentVariable();
+            
         }
 
         private async void SubmitMaintenanceBtn_Click(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace SmartRentalHub
 
         private void MaintenanceForm_Load(object sender, EventArgs e)
         {
-
+            FirestoreHelper.SetEnvironmentVariable();
         }
 
         private void MaintenanceCollection()
@@ -56,13 +56,13 @@ namespace SmartRentalHub
 
             // Create the data for the new document
             Dictionary<string, object> maintenanceDetails = new Dictionary<string, object>
-    {
-        { "Name of Renter", NameOfRenterTbx.Text},
-        { "Phone Number", PhoneNumberTbx.Text},
-        { "Date", dateTimePicker1.Value},
-        { "Priority Level", PrioLevelCmbx.Text},
-        { "More Details", DetailsrichTextBox1.Text}
-    };
+            {
+                { "Name of Renter", NameOfRenterTbx.Text},
+                { "Phone Number", PhoneNumberTbx.Text},
+                { "Date", dateTimePicker1.Value},
+                { "Priority Level", PrioLevelCmbx.Text},
+                { "More Details", DetailsrichTextBox1.Text}
+             };
 
             // Set the data of the new document
             newDocument.SetAsync(maintenanceDetails);

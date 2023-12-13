@@ -34,8 +34,8 @@ namespace SmartRentalHub
             currentChildForm.TopLevel = false;
             currentChildForm.FormBorderStyle = FormBorderStyle.None;
             currentChildForm.Dock = DockStyle.Fill;
-            panel1.Controls.Add(currentChildForm);
-            panel1.Tag = currentChildForm;
+            MapPanel.Controls.Add(currentChildForm);
+            MapPanel.Tag = currentChildForm;
 
             currentChildForm.BringToFront();
             currentChildForm.Show();
@@ -67,6 +67,13 @@ namespace SmartRentalHub
         {
             OpenChildForm(new PersonalinfoForm());
         }
+
+
+        private void MaintenanceBtn_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new MaintenanceForm());
+        }
+
 
         private void AddSpaceRentalBtn_Click(object sender, EventArgs e)
         {
@@ -159,7 +166,7 @@ namespace SmartRentalHub
         {
             ProfilePicPanel.Visible = false;
             NotificationPanel.Visible = false;
-            RoomDetailPanel.Visible = false;
+            
         }
 
 
@@ -241,6 +248,12 @@ namespace SmartRentalHub
         {
             Search();
         }
+
+        private void MySpacesForRentBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
 
         /*private void sidebar_Timer_Tick(object sender, EventArgs e)

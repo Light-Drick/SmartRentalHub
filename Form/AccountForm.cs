@@ -38,5 +38,10 @@ namespace SmartRentalHub
             // Raise the event when the button is clicked
             ShowLogInSecurity?.Invoke(this, EventArgs.Empty);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

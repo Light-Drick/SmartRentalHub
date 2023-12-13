@@ -32,8 +32,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.PriceTbx = new System.Windows.Forms.TextBox();
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
-            this.label4 = new System.Windows.Forms.Label();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -49,7 +47,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.DescriptionRichTextBox3 = new System.Windows.Forms.RichTextBox();
-            this.DescriptionCmbx = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -67,13 +64,14 @@
             this.label16 = new System.Windows.Forms.Label();
             this.AddressrichTextBox2 = new System.Windows.Forms.RichTextBox();
             this.gMapControl1 = new GMap.NET.WindowsForms.GMapControl();
-            this.DescriptionCheckBox1 = new System.Windows.Forms.CheckBox();
             this.txtb_Lat = new System.Windows.Forms.TextBox();
             this.txtb_Long = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.NameOfSpaceTbx = new System.Windows.Forms.TextBox();
+            this.MaxDaysTbx = new System.Windows.Forms.TextBox();
+            this.MaxDayscheckBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -108,32 +106,16 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(654, 73);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 16);
+            this.label3.Size = new System.Drawing.Size(95, 16);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Price:";
+            this.label3.Text = "Price per night:";
             // 
             // PriceTbx
             // 
-            this.PriceTbx.Location = new System.Drawing.Point(729, 67);
+            this.PriceTbx.Location = new System.Drawing.Point(755, 67);
             this.PriceTbx.Name = "PriceTbx";
             this.PriceTbx.Size = new System.Drawing.Size(100, 22);
             this.PriceTbx.TabIndex = 13;
-            // 
-            // monthCalendar1
-            // 
-            this.monthCalendar1.Location = new System.Drawing.Point(142, 217);
-            this.monthCalendar1.MaxSelectionCount = 31;
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 9;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(24, 217);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(106, 16);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Available Dates:";
             // 
             // checkedListBox1
             // 
@@ -230,7 +212,7 @@
             // 
             // AddSpaceBtn
             // 
-            this.AddSpaceBtn.Location = new System.Drawing.Point(458, 516);
+            this.AddSpaceBtn.Location = new System.Drawing.Point(454, 516);
             this.AddSpaceBtn.Name = "AddSpaceBtn";
             this.AddSpaceBtn.Size = new System.Drawing.Size(75, 47);
             this.AddSpaceBtn.TabIndex = 35;
@@ -266,8 +248,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.MaxDayscheckBox1);
+            this.panel1.Controls.Add(this.MaxDaysTbx);
             this.panel1.Controls.Add(this.DescriptionRichTextBox3);
-            this.panel1.Controls.Add(this.DescriptionCmbx);
             this.panel1.Controls.Add(this.label22);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.BathroomsCmbx);
@@ -283,7 +266,6 @@
             this.panel1.Controls.Add(this.label16);
             this.panel1.Controls.Add(this.AddressrichTextBox2);
             this.panel1.Controls.Add(this.gMapControl1);
-            this.panel1.Controls.Add(this.DescriptionCheckBox1);
             this.panel1.Controls.Add(this.txtb_Lat);
             this.panel1.Controls.Add(this.txtb_Long);
             this.panel1.Controls.Add(this.label14);
@@ -306,8 +288,6 @@
             this.panel1.Controls.Add(this.PriceTbx);
             this.panel1.Controls.Add(this.checkedListBox1);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.monthCalendar1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -316,31 +296,16 @@
             // 
             // DescriptionRichTextBox3
             // 
-            this.DescriptionRichTextBox3.Location = new System.Drawing.Point(464, 224);
+            this.DescriptionRichTextBox3.Location = new System.Drawing.Point(75, 229);
             this.DescriptionRichTextBox3.Name = "DescriptionRichTextBox3";
-            this.DescriptionRichTextBox3.Size = new System.Drawing.Size(100, 96);
+            this.DescriptionRichTextBox3.Size = new System.Drawing.Size(582, 121);
             this.DescriptionRichTextBox3.TabIndex = 8;
             this.DescriptionRichTextBox3.Text = "";
-            // 
-            // DescriptionCmbx
-            // 
-            this.DescriptionCmbx.FormattingEnabled = true;
-            this.DescriptionCmbx.Items.AddRange(new object[] {
-            "Peaceful",
-            "Unique",
-            "Family-friendly",
-            "Style",
-            "Central",
-            "Spacious"});
-            this.DescriptionCmbx.Location = new System.Drawing.Point(142, 188);
-            this.DescriptionCmbx.Name = "DescriptionCmbx";
-            this.DescriptionCmbx.Size = new System.Drawing.Size(121, 24);
-            this.DescriptionCmbx.TabIndex = 7;
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(50, 194);
+            this.label22.Location = new System.Drawing.Point(23, 204);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(78, 16);
             this.label22.TabIndex = 70;
@@ -505,6 +470,7 @@
             this.AddressrichTextBox2.Size = new System.Drawing.Size(234, 106);
             this.AddressrichTextBox2.TabIndex = 52;
             this.AddressrichTextBox2.Text = "";
+            this.AddressrichTextBox2.TextChanged += new System.EventHandler(this.AddressrichTextBox2_TextChanged);
             // 
             // gMapControl1
             // 
@@ -513,7 +479,7 @@
             this.gMapControl1.EmptyTileColor = System.Drawing.Color.Navy;
             this.gMapControl1.GrayScaleMode = false;
             this.gMapControl1.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
-            this.gMapControl1.LevelsKeepInMemory = 5;
+            //this.gMapControl1.LevelsKeepInMemory = 5;
             this.gMapControl1.Location = new System.Drawing.Point(557, 404);
             this.gMapControl1.MarkersEnabled = true;
             this.gMapControl1.MaxZoom = 20;
@@ -533,17 +499,6 @@
             this.gMapControl1.Zoom = 0D;
             this.gMapControl1.Load += new System.EventHandler(this.gMapControl1_Load);
             this.gMapControl1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gMapControl1_MouseClick_1);
-            // 
-            // DescriptionCheckBox1
-            // 
-            this.DescriptionCheckBox1.AutoSize = true;
-            this.DescriptionCheckBox1.Location = new System.Drawing.Point(369, 193);
-            this.DescriptionCheckBox1.Name = "DescriptionCheckBox1";
-            this.DescriptionCheckBox1.Size = new System.Drawing.Size(195, 20);
-            this.DescriptionCheckBox1.TabIndex = 50;
-            this.DescriptionCheckBox1.Text = "Describe in your own words:";
-            this.DescriptionCheckBox1.UseVisualStyleBackColor = true;
-            this.DescriptionCheckBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // txtb_Lat
             // 
@@ -595,6 +550,26 @@
             this.NameOfSpaceTbx.Size = new System.Drawing.Size(194, 22);
             this.NameOfSpaceTbx.TabIndex = 0;
             // 
+            // MaxDaysTbx
+            // 
+            this.MaxDaysTbx.Location = new System.Drawing.Point(595, 175);
+            this.MaxDaysTbx.Name = "MaxDaysTbx";
+            this.MaxDaysTbx.Size = new System.Drawing.Size(100, 22);
+            this.MaxDaysTbx.TabIndex = 71;
+            this.MaxDaysTbx.Text = "0";
+            this.MaxDaysTbx.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // MaxDayscheckBox1
+            // 
+            this.MaxDayscheckBox1.AutoSize = true;
+            this.MaxDayscheckBox1.Location = new System.Drawing.Point(587, 149);
+            this.MaxDayscheckBox1.Name = "MaxDayscheckBox1";
+            this.MaxDayscheckBox1.Size = new System.Drawing.Size(145, 20);
+            this.MaxDayscheckBox1.TabIndex = 73;
+            this.MaxDayscheckBox1.Text = "Set Max Days limit?";
+            this.MaxDayscheckBox1.UseVisualStyleBackColor = true;
+            this.MaxDayscheckBox1.CheckedChanged += new System.EventHandler(this.MaxDayscheckBox1_CheckedChanged);
+            // 
             // AddSpaceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -619,8 +594,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox PriceTbx;
-        private System.Windows.Forms.MonthCalendar monthCalendar1;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pictureBox1;
@@ -641,7 +614,6 @@
         private System.Windows.Forms.TextBox txtb_Long;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.CheckBox DescriptionCheckBox1;
         private GMap.NET.WindowsForms.GMapControl gMapControl1;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.RichTextBox AddressrichTextBox2;
@@ -657,9 +629,10 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.ComboBox DescriptionCmbx;
         private System.Windows.Forms.RichTextBox DescriptionRichTextBox3;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.TextBox MaxDaysTbx;
+        private System.Windows.Forms.CheckBox MaxDayscheckBox1;
     }
 }

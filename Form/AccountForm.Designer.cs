@@ -31,6 +31,7 @@
             this.PersonalinfoBtn = new System.Windows.Forms.Button();
             this.LogInSecurityBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // PersonalinfoBtn
@@ -62,11 +63,21 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Account";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(350, 345);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(164, 74);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Notification Settings";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // AccountForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1022, 535);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.LogInSecurityBtn);
             this.Controls.Add(this.PersonalinfoBtn);
@@ -83,5 +94,6 @@
         private System.Windows.Forms.Button PersonalinfoBtn;
         private System.Windows.Forms.Button LogInSecurityBtn;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }

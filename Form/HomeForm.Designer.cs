@@ -30,15 +30,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeForm));
             this.LogOutBtn = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.MapPanel = new System.Windows.Forms.Panel();
             this.MapBtn = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.RoomDetailPanel = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
             this.ProfilePicPanel = new System.Windows.Forms.Panel();
+            this.MaintenanceBtn = new System.Windows.Forms.Button();
             this.AccountBtn = new System.Windows.Forms.Button();
             this.SettingsBtn = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.MySpacesForRentBtn = new System.Windows.Forms.Button();
             this.FAQBtn = new System.Windows.Forms.Button();
             this.AddSpaceRentalBtn = new System.Windows.Forms.Button();
             this.RentASpaceBtn = new System.Windows.Forms.Button();
@@ -46,13 +45,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.SearchBtn = new System.Windows.Forms.Button();
-            this.NotificationBtn = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.ProfilePicBtn = new System.Windows.Forms.Button();
             this.SearchTbx = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
-            this.RoomDetailPanel.SuspendLayout();
+            this.NotificationBtn = new System.Windows.Forms.Button();
+            this.ProfilePicBtn = new System.Windows.Forms.Button();
+            this.MapPanel.SuspendLayout();
             this.ProfilePicPanel.SuspendLayout();
             this.NotificationPanel.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -60,7 +58,7 @@
             // 
             // LogOutBtn
             // 
-            this.LogOutBtn.Location = new System.Drawing.Point(7, 274);
+            this.LogOutBtn.Location = new System.Drawing.Point(7, 359);
             this.LogOutBtn.Name = "LogOutBtn";
             this.LogOutBtn.Size = new System.Drawing.Size(135, 32);
             this.LogOutBtn.TabIndex = 0;
@@ -68,19 +66,18 @@
             this.LogOutBtn.UseVisualStyleBackColor = true;
             this.LogOutBtn.Click += new System.EventHandler(this.LogOutBtn_Click);
             // 
-            // panel1
+            // MapPanel
             // 
-            this.panel1.Controls.Add(this.MapBtn);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.RoomDetailPanel);
-            this.panel1.Controls.Add(this.ProfilePicPanel);
-            this.panel1.Controls.Add(this.NotificationPanel);
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1208, 564);
-            this.panel1.TabIndex = 2;
+            this.MapPanel.Controls.Add(this.MapBtn);
+            this.MapPanel.Controls.Add(this.label3);
+            this.MapPanel.Controls.Add(this.ProfilePicPanel);
+            this.MapPanel.Controls.Add(this.NotificationPanel);
+            this.MapPanel.Controls.Add(this.panel2);
+            this.MapPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MapPanel.Location = new System.Drawing.Point(0, 0);
+            this.MapPanel.Name = "MapPanel";
+            this.MapPanel.Size = new System.Drawing.Size(1208, 564);
+            this.MapPanel.TabIndex = 2;
             // 
             // MapBtn
             // 
@@ -95,47 +92,41 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(548, 274);
+            this.label3.Location = new System.Drawing.Point(494, 275);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(112, 16);
             this.label3.TabIndex = 12;
             this.label3.Text = "Google map here";
             // 
-            // RoomDetailPanel
-            // 
-            this.RoomDetailPanel.Controls.Add(this.label5);
-            this.RoomDetailPanel.Location = new System.Drawing.Point(3, 73);
-            this.RoomDetailPanel.Name = "RoomDetailPanel";
-            this.RoomDetailPanel.Size = new System.Drawing.Size(421, 479);
-            this.RoomDetailPanel.TabIndex = 11;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(152, 231);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(117, 16);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Room details here";
-            // 
             // ProfilePicPanel
             // 
             this.ProfilePicPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ProfilePicPanel.Controls.Add(this.MaintenanceBtn);
             this.ProfilePicPanel.Controls.Add(this.AccountBtn);
             this.ProfilePicPanel.Controls.Add(this.SettingsBtn);
-            this.ProfilePicPanel.Controls.Add(this.button1);
+            this.ProfilePicPanel.Controls.Add(this.MySpacesForRentBtn);
             this.ProfilePicPanel.Controls.Add(this.FAQBtn);
             this.ProfilePicPanel.Controls.Add(this.AddSpaceRentalBtn);
             this.ProfilePicPanel.Controls.Add(this.RentASpaceBtn);
             this.ProfilePicPanel.Controls.Add(this.LogOutBtn);
             this.ProfilePicPanel.Location = new System.Drawing.Point(1049, 73);
             this.ProfilePicPanel.Name = "ProfilePicPanel";
-            this.ProfilePicPanel.Size = new System.Drawing.Size(147, 311);
+            this.ProfilePicPanel.Size = new System.Drawing.Size(147, 394);
             this.ProfilePicPanel.TabIndex = 9;
+            // 
+            // MaintenanceBtn
+            // 
+            this.MaintenanceBtn.Location = new System.Drawing.Point(5, 181);
+            this.MaintenanceBtn.Name = "MaintenanceBtn";
+            this.MaintenanceBtn.Size = new System.Drawing.Size(135, 55);
+            this.MaintenanceBtn.TabIndex = 9;
+            this.MaintenanceBtn.Text = "Maintenance Request";
+            this.MaintenanceBtn.UseVisualStyleBackColor = true;
+            this.MaintenanceBtn.Click += new System.EventHandler(this.MaintenanceBtn_Click);
             // 
             // AccountBtn
             // 
-            this.AccountBtn.Location = new System.Drawing.Point(7, 157);
+            this.AccountBtn.Location = new System.Drawing.Point(7, 242);
             this.AccountBtn.Name = "AccountBtn";
             this.AccountBtn.Size = new System.Drawing.Size(135, 31);
             this.AccountBtn.TabIndex = 8;
@@ -145,7 +136,7 @@
             // 
             // SettingsBtn
             // 
-            this.SettingsBtn.Location = new System.Drawing.Point(7, 201);
+            this.SettingsBtn.Location = new System.Drawing.Point(7, 286);
             this.SettingsBtn.Name = "SettingsBtn";
             this.SettingsBtn.Size = new System.Drawing.Size(135, 31);
             this.SettingsBtn.TabIndex = 3;
@@ -153,18 +144,19 @@
             this.SettingsBtn.UseVisualStyleBackColor = true;
             this.SettingsBtn.Click += new System.EventHandler(this.SettingsBtn_Click);
             // 
-            // button1
+            // MySpacesForRentBtn
             // 
-            this.button1.Location = new System.Drawing.Point(7, 77);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(131, 40);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "My Spaces for rent";
-            this.button1.UseVisualStyleBackColor = true;
+            this.MySpacesForRentBtn.Location = new System.Drawing.Point(7, 77);
+            this.MySpacesForRentBtn.Name = "MySpacesForRentBtn";
+            this.MySpacesForRentBtn.Size = new System.Drawing.Size(131, 40);
+            this.MySpacesForRentBtn.TabIndex = 7;
+            this.MySpacesForRentBtn.Text = "My Spaces for rent";
+            this.MySpacesForRentBtn.UseVisualStyleBackColor = true;
+            this.MySpacesForRentBtn.Click += new System.EventHandler(this.MySpacesForRentBtn_Click);
             // 
             // FAQBtn
             // 
-            this.FAQBtn.Location = new System.Drawing.Point(7, 238);
+            this.FAQBtn.Location = new System.Drawing.Point(7, 323);
             this.FAQBtn.Name = "FAQBtn";
             this.FAQBtn.Size = new System.Drawing.Size(135, 31);
             this.FAQBtn.TabIndex = 2;
@@ -235,17 +227,6 @@
             this.SearchBtn.UseVisualStyleBackColor = true;
             this.SearchBtn.Click += new System.EventHandler(this.SearchBtn_Click);
             // 
-            // NotificationBtn
-            // 
-            this.NotificationBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("NotificationBtn.BackgroundImage")));
-            this.NotificationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.NotificationBtn.Location = new System.Drawing.Point(1069, 6);
-            this.NotificationBtn.Name = "NotificationBtn";
-            this.NotificationBtn.Size = new System.Drawing.Size(62, 57);
-            this.NotificationBtn.TabIndex = 11;
-            this.NotificationBtn.UseVisualStyleBackColor = true;
-            this.NotificationBtn.Click += new System.EventHandler(this.NotificationBtn_Click);
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -256,18 +237,6 @@
             this.label4.TabIndex = 12;
             this.label4.Text = "SMARTRENTAL HUB";
             this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // ProfilePicBtn
-            // 
-            this.ProfilePicBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProfilePicBtn.BackgroundImage")));
-            this.ProfilePicBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ProfilePicBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ProfilePicBtn.Location = new System.Drawing.Point(1137, 7);
-            this.ProfilePicBtn.Name = "ProfilePicBtn";
-            this.ProfilePicBtn.Size = new System.Drawing.Size(59, 55);
-            this.ProfilePicBtn.TabIndex = 10;
-            this.ProfilePicBtn.UseVisualStyleBackColor = true;
-            this.ProfilePicBtn.Click += new System.EventHandler(this.ProfilePicBtn_Click);
             // 
             // SearchTbx
             // 
@@ -285,19 +254,40 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "Search:";
             // 
+            // NotificationBtn
+            // 
+            this.NotificationBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("NotificationBtn.BackgroundImage")));
+            this.NotificationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.NotificationBtn.Location = new System.Drawing.Point(1069, 6);
+            this.NotificationBtn.Name = "NotificationBtn";
+            this.NotificationBtn.Size = new System.Drawing.Size(62, 57);
+            this.NotificationBtn.TabIndex = 11;
+            this.NotificationBtn.UseVisualStyleBackColor = true;
+            this.NotificationBtn.Click += new System.EventHandler(this.NotificationBtn_Click);
+            // 
+            // ProfilePicBtn
+            // 
+            this.ProfilePicBtn.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ProfilePicBtn.BackgroundImage")));
+            this.ProfilePicBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ProfilePicBtn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ProfilePicBtn.Location = new System.Drawing.Point(1137, 7);
+            this.ProfilePicBtn.Name = "ProfilePicBtn";
+            this.ProfilePicBtn.Size = new System.Drawing.Size(59, 55);
+            this.ProfilePicBtn.TabIndex = 10;
+            this.ProfilePicBtn.UseVisualStyleBackColor = true;
+            this.ProfilePicBtn.Click += new System.EventHandler(this.ProfilePicBtn_Click);
+            // 
             // HomeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1208, 564);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.MapPanel);
             this.Name = "HomeForm";
             this.Text = "HomeForm";
             this.Load += new System.EventHandler(this.HomeForm_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.RoomDetailPanel.ResumeLayout(false);
-            this.RoomDetailPanel.PerformLayout();
+            this.MapPanel.ResumeLayout(false);
+            this.MapPanel.PerformLayout();
             this.ProfilePicPanel.ResumeLayout(false);
             this.NotificationPanel.ResumeLayout(false);
             this.NotificationPanel.PerformLayout();
@@ -310,12 +300,12 @@
         #endregion
 
         private System.Windows.Forms.Button LogOutBtn;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel MapPanel;
         private System.Windows.Forms.Button AddSpaceRentalBtn;
         private System.Windows.Forms.Button RentASpaceBtn;
         private System.Windows.Forms.TextBox SearchTbx;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button MySpacesForRentBtn;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel ProfilePicPanel;
         private System.Windows.Forms.Button ProfilePicBtn;
@@ -323,13 +313,12 @@
         private System.Windows.Forms.Panel NotificationPanel;
         private System.Windows.Forms.Button FAQBtn;
         private System.Windows.Forms.Button SettingsBtn;
-        private System.Windows.Forms.Panel RoomDetailPanel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button SearchBtn;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button AccountBtn;
         private System.Windows.Forms.Button MapBtn;
+        private System.Windows.Forms.Button MaintenanceBtn;
     }
 }

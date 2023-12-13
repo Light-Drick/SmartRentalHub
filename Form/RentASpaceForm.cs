@@ -32,15 +32,15 @@ namespace SmartRentalHub
             if (snap.Exists)
             {
                 SpaceDetails SpaceForRent = snap.ConvertTo<SpaceDetails>();
-                LocationTbx.Text= SpaceForRent.Location;
-                NameOfSpaceTbx.Text = SpaceForRent.NameOfSpace;
-                PhoneTbx.Text = SpaceForRent.PhoneNumber;
-                TypeCmbx.Text = SpaceForRent.Type.ToString();
+                //LocationTbx.Text= SpaceForRent.Location;
+                NameOfSpaceTbx.Text = SpaceForRent.NameTitleOfSpace;
+               /* PhoneTbx.Text = SpaceForRent.PhoneNumber;
+                TypeCmbx.Text = SpaceForRent.RoomType.ToString();
                 PriceTbx.Text = SpaceForRent.Price;
                 StartDateTbx.Text = SpaceForRent.StartDate;
                 EndDateTBx.Text = SpaceForRent.EndDate;
-                richTextBox1.Text = SpaceForRent.Rules.ToString(); 
-
+                richTextBox1.Text = SpaceForRent.RulesConditions.ToString(); 
+               */
             }
         }
 
@@ -50,6 +50,11 @@ namespace SmartRentalHub
         }
 
         private void EndDateTBx_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DescriptionCmbx_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

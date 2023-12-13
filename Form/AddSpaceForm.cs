@@ -41,26 +41,26 @@ namespace SmartRentalHub
         private GeocodingHelper geocodingHelper;
         Geocoder geocoder = new Geocoder("26abc1c4541f47ba95cf68789121f788");
         private readonly List<string> suggestedSearches = new List<string>();
-        
+
         public AddSpaceForm()
         {
             InitializeComponent();
             string username = MaintainUsername.Username;
             UsernameTbx.Text = username;
-            DescriptionCheckBox1.Checked = true;
-            
+
+
             gMapControl1.MouseClick += new MouseEventHandler(gMapControl1_MouseClick_1);
 
         }
 
 
-        
+
         private void AddSpaceForm_Load(object sender, EventArgs e)
         {
             //connection to database
             FirestoreHelper.SetEnvironmentVariable();
 
-            
+
             GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerAndCache;
             gMapControl1.MapProvider = GMap.NET.MapProviders.GoogleMapProvider.Instance;
 
@@ -76,48 +76,76 @@ namespace SmartRentalHub
             // Initialize the geocoding helper
             geocodingHelper = new GeocodingHelper();
 
-            gMapControl1.ShowCenter = false; 
+            gMapControl1.ShowCenter = false;
+
+            MaxDayscheckBox1_CheckedChanged(null, null);
 
         }
-        
-       
-       
+
+
+
         private async void AddSpaceBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                /*// Iterate over all controls in the form
+                /*bool isAllFilled = true;
+
+                // Iterate over all controls in the form
                 foreach (Control c in this.Controls)
                 {
-                    // Check if the control is a textbox
-                    if (c is TextBox)
+                    // Check if the control is a textbox or a combobox
+                    if (c is TextBox || c is ComboBox)
                     {
-                        // Check if the textbox is not empty
-                        if (!string.IsNullOrWhiteSpace(((TextBox)c).Text))
-                        {*/
-                            // Your code here for when the textbox is filled
-                            var startDate = monthCalendar1.SelectionRange.Start.ToString("dd MMM yyyy");
-                            var endDate = monthCalendar1.SelectionRange.End.ToString("dd MMM yyyy");
-
-                            AddToListOfObjects(startDate, endDate);
-
-                            
-                            ClearControls();
-
-                       // }
-                        /*else
-                            MessageBox.Show("Fill up all the required information.");
-
-
+                        // Check if the textbox or combobox is not empty
+                        if (string.IsNullOrWhiteSpace(c.Text))
+                        {
+                            isAllFilled = false;
+                            break;
+                        }
                     }
-                }*/
-            }
-            catch
-            {
-                MessageBox.Show("Error!");
-            }
+                    else if (c is PictureBox)
+                    {
+                        // Check if the picturebox is not empty
+                        PictureBox pb = c as PictureBox;
+                        if (pb.Image == null)
+                        {
+                            isAllFilled = false;
+                            break;
+                        }
+                    }
 
+
+                    else if (c is RichTextBox)
+                    {
+                        // Check if the richtextbox is not empty
+                        RichTextBox rtb = c as RichTextBox;
+                        if (string.IsNullOrWhiteSpace(rtb.Text))
+                        {
+                            isAllFilled = false;
+                            break;
+                        }
+                    }
+
+                }
+
+                if (!isAllFilled)
+                {
+                    MessageBox.Show("Fill up all the required information.");
+                }
+                else
+                {*/
+                    AddToFields();
+                    ClearControls();
+                //}
+                  
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
+
+        #region Image Code
 
         private string ConvertImageToBase64(Image image)
         {
@@ -140,45 +168,100 @@ namespace SmartRentalHub
             return null;
         }
 
-        
-        async void AddToListOfObjects(string start, string end)
+
+        private void BrowseBtn_Click(object sender, EventArgs e)
         {
-            int roomNumber = 1;
-            // Concatenate username and room number
-            string documentName = UsernameTbx.Text + roomNumber.ToString();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png";
 
-
-            try
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //CollectionReference roomsRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text).Collection("Rooms");
-                CollectionReference roomsRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text).Collection("Rooms");
+                string[] base64Strings = new string[openFileDialog.FileNames.Length];
 
-                // Get the last document in the collection ordered by roomNumber
-                Query query = roomsRef.OrderBy("roomNumber");
-                QuerySnapshot snapshot = await query.GetSnapshotAsync();
-
-                // If the snapshot contains any documents, get the last document and increment its roomNumber
-                if (snapshot.Count > 0)
+                for (int i = 0; i < openFileDialog.FileNames.Length; i++)
                 {
-                    DocumentSnapshot lastRoom = snapshot.Documents.LastOrDefault();
-                    roomNumber = lastRoom.GetValue<int>("roomNumber") + 1;
-                    documentName = UsernameTbx.Text + roomNumber.ToString(); // Update documentName with new roomNumber
+                    // Read the image file into a byte array
+                    byte[] imageBytes = File.ReadAllBytes(openFileDialog.FileNames[i]);
+
+                    // Convert the byte array to a base64 string
+                    string base64String = Convert.ToBase64String(imageBytes);
+
+                    // Add the base64 string to the array
+                    base64Strings[i] = base64String;
                 }
 
+                ConvertBase64ToImageAndDisplay(base64Strings);
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox1.BackgroundImage = null;
+                pictureBox2.BackgroundImage = null;
+                pictureBox3.BackgroundImage = null;
+            }
+        }
+
+        private void ConvertBase64ToImageAndDisplay(string[] base64Strings)
+        {
+            try
+            {
+                for (int i = 0; i < base64Strings.Length; i++)
+                {
+                    // Convert Base64 String to byte[]
+                    byte[] imageBytes = Convert.FromBase64String(base64Strings[i]);
+
+                    // Create a MemoryStream from the byte array
+                    using (var ms = new MemoryStream(imageBytes))
+                    {
+                        // Create an Image from the MemoryStream
+                        Image image = Image.FromStream(ms);
+
+                        // Display the Image in the PictureBox
+                        PictureBox pictureBox = this.Controls.Find("pictureBox" + (i + 1), true).FirstOrDefault() as PictureBox;
+                        pictureBox.Image = image;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error converting base64 to image: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        async void AddToFields()
+        {
+            try
+            {
+                string documentName = NameOfSpaceTbx.Text;
 
 
+                CollectionReference roomsRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text).Collection("Rooms");
 
-                // Convert the profile picture to a base64 string
-                string roomPicBase64 = ConvertImageToBase64(pictureBox1.Image);
-                roomPicBase64 += ConvertImageToBase64(pictureBox2.Image);
-                roomPicBase64 += ConvertImageToBase64(pictureBox3.Image);
+                DocumentReference roomRef = roomsRef.Document(documentName);
 
-                // Log the base64 string in output
-                Console.WriteLine($"RoomPicBase64: {roomPicBase64}");
+                // Convert each picture to a base64 string
+                string roomPic1Base64 = ConvertImageToBase64(pictureBox1.Image);
+                string roomPic2Base64 = ConvertImageToBase64(pictureBox2.Image);
+                string roomPic3Base64 = ConvertImageToBase64(pictureBox3.Image);
+
+                // Create a Photos subcollection under the room document
+                CollectionReference photosRef = roomRef.Collection("Photos");
+
+                // Add each photo to the Photos subcollection
+                await photosRef.AddAsync(new { Photo = roomPic1Base64 });
+                await photosRef.AddAsync(new { Photo = roomPic2Base64 });
+                await photosRef.AddAsync(new { Photo = roomPic3Base64 });
+
 
                 Dictionary<string, object> room = new Dictionary<string, object>();
+                double lat, lng, price;
+                if (double.TryParse(txtb_Lat.Text, out lat) && double.TryParse(txtb_Long.Text, out lng) && double.TryParse(PriceTbx.Text, out price))
+                {
+                    
+                    Dictionary<string, object> Data1 = new Dictionary<string, object>
 
-                Dictionary<string, object> List1 = new Dictionary<string, object>
             {
                 {"Username", UsernameTbx.Text },
                 {"Name/Title of Space", NameOfSpaceTbx.Text },
@@ -191,65 +274,39 @@ namespace SmartRentalHub
                  {"BathRoom", BathroomsCmbx.Text },
 
                 {"Phone", PhoneNumberTbx.Text },
-                {"Price", PriceTbx.Text },
+                {"Price per night", PriceTbx.Text },
 
-               
-
-                { "StartDate", start},
-                {"EndDate", end},
-                {"Rules/Conditions", RulesrichTextBox1.Text},
-                {"Longitude", txtb_Long.Text},
-                {"Latitude", txtb_Lat.Text},
+                {"Max days limit", MaxDaysTbx.Text },
+                {"Rules", RulesrichTextBox1.Text},
+                {"Longitude", lng},
+                {"Latitude", lat},
                 {"Address", AddressrichTextBox2.Text},
-                {"3_Picture_Room", roomPicBase64},
+                {"Description", DescriptionRichTextBox3.Text},
+
+
             };
-                // Add description to the dictionary based on the checkbox
-                if (DescriptionCheckBox1.Checked)
-                {
-                    List1.Add("Description", DescriptionRichTextBox3.Text);
-                }
-                else if (!DescriptionCheckBox1.Checked)
-                {
-                    List1.Add("Description", DescriptionCmbx.Text);
-                }
+                    
 
 
-
-                if (!string.IsNullOrEmpty(roomPicBase64))
-                {
-                    /*DocumentReference docRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text).Collection("Rooms").Document(documentName);
-                    CollectionReference subRef = docRef.Collection("Pictures"); // Get a subcollection reference
-                    Dictionary<string, object> picture = new Dictionary<string, object>
+                    List<string> Amenities = new List<string>();
+                    foreach (object item in checkedListBox1.Items)
                     {
-                        {"url", "roomPicBase64"}
-                        
-                    };
-                    await subRef.AddAsync(picture); // Add a document to the subcollection
-                    */
-                   List1.Add("Room_PIc", roomPicBase64);
-                }
-
-                List<string> checkedItems = new List<string>();
-                foreach (object item in checkedListBox1.Items)
-                {
-                    if (checkedListBox1.GetItemChecked(checkedListBox1.Items.IndexOf(item)))
-                    {
-                        checkedItems.Add(item.ToString());
+                        if (checkedListBox1.GetItemChecked(checkedListBox1.Items.IndexOf(item)))
+                        {
+                            Amenities.Add(item.ToString());
+                        }
                     }
+
+                    Data1.Add("CheckedItems", Amenities);
+
+                    
+                    await roomsRef.Document(documentName).SetAsync(Data1);
+
+                    MessageBox.Show("Added succesfully!");
+
                 }
-
-                List1.Add("CheckedItems", checkedItems);
-
-                room.Add("Space", List1);
-                await roomsRef.AddAsync(room);
-
-
-                //await roomsRef.Document(documentName).SetAsync(room);
-
-                MessageBox.Show("Added succesfully!");
-
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
@@ -375,83 +432,37 @@ namespace SmartRentalHub
         }
 
        
-            private void BrowseBtn_Click(object sender, EventArgs e)
-            {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Multiselect = true;
-                openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.png) | *.jpg; *.jpeg; *.png";
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string[] base64Strings = new string[openFileDialog.FileNames.Length];
+      
 
-                    for (int i = 0; i < openFileDialog.FileNames.Length; i++)
-                    {
-                        // Read the image file into a byte array
-                        byte[] imageBytes = File.ReadAllBytes(openFileDialog.FileNames[i]);
-
-                        // Convert the byte array to a base64 string
-                        string base64String = Convert.ToBase64String(imageBytes);
-
-                        // Add the base64 string to the array
-                        base64Strings[i] = base64String;
-                    }
-
-                    ConvertBase64ToImageAndDisplay(base64Strings);
-                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                //pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-                //pictureBox3.SizeMode = PictureBoxSizeMode.Zoom;
-                pictureBox1.BackgroundImage = null;
-                //pictureBox2.BackgroundImage = null;
-               //  pictureBox3.BackgroundImage = null;
-            }
-            }
-        
-
-        private void ConvertBase64ToImageAndDisplay(string[] base64Strings)
-        {
-            try
-            {
-                for (int i = 0; i < base64Strings.Length; i++)
-                {
-                    // Convert Base64 String to byte[]
-                    byte[] imageBytes = Convert.FromBase64String(base64Strings[i]);
-
-                    // Create a MemoryStream from the byte array
-                    using (var ms = new MemoryStream(imageBytes))
-                    {
-                        // Create an Image from the MemoryStream
-                        Image image = Image.FromStream(ms);
-
-                        // Display the Image in the PictureBox
-                        PictureBox pictureBox = this.Controls.Find("pictureBox" + (i + 1), true).FirstOrDefault() as PictureBox;
-                        pictureBox.Image = image;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error converting base64 to image: {ex.Message}");
-            }
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DescriptionCheckBox1.Checked)
-            {
-                DescriptionRichTextBox3.Enabled = true;
-                DescriptionCmbx.Enabled = false;
-            }
-            else
-            {
-                DescriptionRichTextBox3.Enabled = false;
-                DescriptionCmbx.Enabled = true;
-            }
-        }
 
         private void gMapControl1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void AddressrichTextBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MaxDayscheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (MaxDayscheckBox1.Checked)
+            {
+                MaxDaysTbx.Enabled = true;
+                MaxDaysTbx.Text = "";
+            }
+            else if (!MaxDayscheckBox1.Checked) 
+            {
+                MaxDaysTbx.Enabled = false;
+                MaxDaysTbx.Text = "0";
+            }
         }
     }
 }

@@ -12,11 +12,14 @@ using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
+using Google.Api;
 using Google.Cloud.Firestore;
 using Google.Cloud.Location;
 using Newtonsoft.Json;
 using OpenCage.Geocode;
+using ServiceStack;
 using SmartRentalHub.Class;
+
 
 namespace SmartRentalHub
 {
@@ -32,22 +35,21 @@ namespace SmartRentalHub
         public MapForm()
         {
             InitializeComponent();
+            
 
-            //GMapProviders.GoogleMap.ApiKey = @"AIzaSyA_ltg1q16Xf_cSIw7S64HDMQ_hAUDU2cI";
-            // gMapControl1.MapProvider = GMapProviders.GoogleMap;
-
-            //firestore connection
-            FirestoreHelper.SetEnvironmentVariable();
-
-
+            // Handle the OnMarkerClick event
+            gMapControl1.OnMarkerClick += gMapControl1_OnMarkerClick;
 
         }
+
 
 
         private async void MapForm_Load(object sender, EventArgs e)
         {
             try
             {
+                FirestoreHelper.SetEnvironmentVariable();
+
                 zooming();
                 // Initialize the map
                 GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerAndCache;
@@ -58,7 +60,8 @@ namespace SmartRentalHub
                 // Fetch locations from Firestore and add them to the map
                 await GetLocationsFromFirestore();
 
-                Get_All_Documents_Lat_Longt_From_Collection();
+                RoomDetailsPanel.Visible = false;
+
             }
             catch (Exception ex)
             {
@@ -90,6 +93,10 @@ namespace SmartRentalHub
 
             try
             {
+                
+                var db = FirestoreHelper.database;
+
+
                 CollectionReference spaceForRentRef = FirestoreHelper.database.Collection("Space for rent");
                 QuerySnapshot ownersSnapshot = await spaceForRentRef.GetSnapshotAsync();
 
@@ -110,10 +117,10 @@ namespace SmartRentalHub
 
                             }
                         }
+                        // Pass the roomData variable to the AddPinsToMap method
+                        AddPinsToMap(locations, roomData);
                     }
                 }
-
-                AddPinsToMap(locations);
             }
             catch (Exception ex)
             {
@@ -124,15 +131,22 @@ namespace SmartRentalHub
 
 
 
-        public void AddPinsToMap(List<PointLatLng> locations)
+        // Modify the AddPinsToMap method to accept a Dictionary<string, object> parameter
+        public void AddPinsToMap(List<PointLatLng> locations, Dictionary<string, object> roomData)
         {
             MessageBox.Show($"Number of locations to add: {locations.Count}");
             var markers = new GMapOverlay("markers");
             foreach (var location in locations)
             {
                 var marker = new GMarkerGoogle(location, GMarkerGoogleType.red_pushpin);
-                markers.Markers.Add(marker);
+                // Get the latitude and longitude values from the roomData parameter
+                double lat = (double)roomData["Latitude"];
+                double lng = (double)roomData["Longitude"];
+
+                // Set the tooltip text with the latitude and longitude values
+                marker.ToolTipText = $"Latitude: {lat}, \nLongitude: {lng}";
                 
+                markers.Markers.Add(marker);
             }
             gMapControl1.Overlays.Add(markers);
             gMapControl1.Refresh();
@@ -149,52 +163,48 @@ namespace SmartRentalHub
             zooming();
         }
 
-
-        private async void Get_All_Documents_Lat_Longt_From_Collection()
+        
+        private async Task  YourMarker_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
-            // Get a reference to the Firestore database
-            CollectionReference spaceForRentRef = FirestoreHelper.database.Collection("Space for rent");
+            // Fetch data from Firestore
+            DocumentReference docRef = FirestoreHelper.database.Collection("Space for rent").Document("yourSpaceId");
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
-            // Get all documents (i.e., all owners) in the "Space for rent" collection
-            QuerySnapshot ownersSnapshot = await spaceForRentRef.GetSnapshotAsync();
-
-            foreach (DocumentSnapshot ownerSnapshot in ownersSnapshot)
+            if (snapshot.Exists)
             {
-                if (ownerSnapshot.Exists)
-                {
-                    // Get the "Rooms" collection for this owner
-                    CollectionReference roomsRef = ownerSnapshot.Reference.Collection("Rooms");
+                Dictionary<string, object> space = snapshot.ToDictionary();
+                string photoUrl = space["photoUrl"].ToString();
+                string title = space["title"].ToString();
+                string price = space["Price"].ToString();
+                string owner = space["username"].ToString();
 
-                    // Get all documents (i.e., all rooms) in this owner's "Rooms" collection
-                    QuerySnapshot roomsSnapshot = await roomsRef.GetSnapshotAsync();
+                // Update the RoomDetailsPanel with the data
+                /*RoomDetailsPanel.Photo.Source = new BitmapImage(new Uri(photoUrl));
+                 RoomDetailsPanel.Title.Text = title;
+                 RoomDetailsPanel.Price.Text = price;
+                RoomDetailsPanel.Owner.Text = owner;
 
-                    foreach (DocumentSnapshot roomSnapshot in roomsSnapshot)
-                    {
-                        if (roomSnapshot.Exists)
-                        {
-                            SpaceDetails spaceDetails = roomSnapshot.ConvertTo<SpaceDetails>();
-                            // Debugging lines
-                            Console.WriteLine("Document ID: " + roomSnapshot.Id);
-                            Console.WriteLine("SpaceDetails object: " + JsonConvert.SerializeObject(spaceDetails));
-
-                            richTextBox1.Text += "Name/Title of Space: " + roomSnapshot.Id + "\n";
-                            richTextBox1.Text += "Latitude: " + spaceDetails.Latitude + "\n";
-                            richTextBox1.Text += "Longitude: " + spaceDetails.Longitude + "\n\n";
-                            richTextBox1.Text += "Address: " + spaceDetails.Address + "\n\n";
-                            richTextBox1.Text += "Accommodation: " + spaceDetails.Accommodation + "\n\n";
-                            richTextBox1.Text += "Room Type: " + spaceDetails.RoomType + "\n\n";
-                            richTextBox1.Text += "Guests: " + spaceDetails.Guest + "\n\n";
-                            richTextBox1.Text += "Bed: " + spaceDetails.Bed + "\n\n";
-                            richTextBox1.Text += "Bedroom: " + spaceDetails.Bedroom + "\n\n";
-
-
-                        }
-                    }
-                }
+                // Show the RoomDetailsPanel
+                RoomDetailsPanel.Visibility = Visibility.Visible;*/
             }
-
-            MessageBox.Show("All Latitude and Longitude data retrieved successfully.");
+            else
+            {
+                Console.WriteLine("No such document!");
+            }
         }
 
+        private void gMapControl1_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            // Get the marker object from the event args
+            var marker = item as GMarkerGoogle;
+
+            // Do some action with the marker
+            RoomDetailsPanel.Visible = true;
+
+            // For example, show a message box with the marker's tooltip and position
+            MessageBox.Show($"You clicked {marker.ToolTipText} at {marker.Position}", "Marker Clicked");
+        }
+
+        
     }
 }
