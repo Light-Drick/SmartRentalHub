@@ -1,5 +1,4 @@
-﻿using Gmap.net.Overlays;
-using Google.Cloud.Firestore;
+﻿using Google.Cloud.Firestore;
 using Google.Cloud.Firestore.V1;
 using SmartRentalHub.Class;
 using System;

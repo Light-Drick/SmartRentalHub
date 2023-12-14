@@ -236,10 +236,32 @@ namespace SmartRentalHub
             {
                 string documentName = NameOfSpaceTbx.Text;
 
+                //new codes
 
-                CollectionReference roomsRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text).Collection("Rooms");
+                // Create a user document (in italic) under the "Space for rent" collection
+                DocumentReference userDocRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text);
 
-                DocumentReference roomRef = roomsRef.Document(documentName);
+                // Check if the user document exists
+                DocumentSnapshot userDocSnapshot = await userDocRef.GetSnapshotAsync();
+
+                if (!userDocSnapshot.Exists)
+                {
+                    // If the user document does not exist, create it
+                    Dictionary<string, object> userData = new Dictionary<string, object>
+                    {
+                        // Add any relevant user data
+                    };
+
+                    await userDocRef.SetAsync(userData);
+                }
+
+
+                //CollectionReference roomsRef = FirestoreHelper.database.Collection("Space for rent").Document(UsernameTbx.Text).Collection("Rooms");
+
+                //DocumentReference roomRef = roomsRef.Document(documentName);
+
+                CollectionReference roomsRef = userDocRef.Collection("Rooms"); //new
+                DocumentReference roomRef = roomsRef.Document(documentName); //new
 
                 // Convert each picture to a base64 string
                 string roomPic1Base64 = ConvertImageToBase64(pictureBox1.Image);
@@ -255,38 +277,81 @@ namespace SmartRentalHub
                 await photosRef.AddAsync(new { Photo = roomPic3Base64 });
 
 
+                //    Dictionary<string, object> room = new Dictionary<string, object>();
+                //    double lat, lng, price;
+                //    if (double.TryParse(txtb_Lat.Text, out lat) && double.TryParse(txtb_Long.Text, out lng) && double.TryParse(PriceTbx.Text, out price))
+                //    {
+
+                //        Dictionary<string, object> Data1 = new Dictionary<string, object>
+
+                //{
+                //    {"Username", UsernameTbx.Text },
+                //    {"Name/Title of Space", NameOfSpaceTbx.Text },
+
+                //    {"Accommodation", AccomodationCmbx.Text },
+                //     {"Room Type", RoomTypeCmbx.Text },
+                //     {"Guest", GuestCmbx.Text },
+                //     {"Bedroom", BedroomCmbx.Text },
+                //     {"Bed", BedCmbx.Text },
+                //     {"BathRoom", BathroomsCmbx.Text },
+
+                //    {"Phone", PhoneNumberTbx.Text },
+                //    {"Price per night", PriceTbx.Text },
+
+                //    {"Max days limit", MaxDaysTbx.Text },
+                //    {"Rules", RulesrichTextBox1.Text},
+                //    {"Longitude", lng},
+                //    {"Latitude", lat},
+                //    {"Address", AddressrichTextBox2.Text},
+                //    {"Description", DescriptionRichTextBox3.Text},
+
+
+                //};
+
+
+
+                //        List<string> Amenities = new List<string>();
+                //        foreach (object item in checkedListBox1.Items)
+                //        {
+                //            if (checkedListBox1.GetItemChecked(checkedListBox1.Items.IndexOf(item)))
+                //            {
+                //                Amenities.Add(item.ToString());
+                //            }
+                //        }
+
+                //        Data1.Add("CheckedItems", Amenities);
+
+
+                //        await roomsRef.Document(documentName).SetAsync(Data1);
+
+                //        MessageBox.Show("Added succesfully!");
+
+                //    }
+
+                // Add room details
                 Dictionary<string, object> room = new Dictionary<string, object>();
                 double lat, lng, price;
                 if (double.TryParse(txtb_Lat.Text, out lat) && double.TryParse(txtb_Long.Text, out lng) && double.TryParse(PriceTbx.Text, out price))
                 {
-                    
-                    Dictionary<string, object> Data1 = new Dictionary<string, object>
-
+                    Dictionary<string, object> roomData = new Dictionary<string, object>
             {
                 {"Username", UsernameTbx.Text },
                 {"Name/Title of Space", NameOfSpaceTbx.Text },
-
                 {"Accommodation", AccomodationCmbx.Text },
-                 {"Room Type", RoomTypeCmbx.Text },
-                 {"Guest", GuestCmbx.Text },
-                 {"Bedroom", BedroomCmbx.Text },
-                 {"Bed", BedCmbx.Text },
-                 {"BathRoom", BathroomsCmbx.Text },
-
+                {"Room Type", RoomTypeCmbx.Text },
+                {"Guest", GuestCmbx.Text },
+                {"Bedroom", BedroomCmbx.Text },
+                {"Bed", BedCmbx.Text },
+                {"BathRoom", BathroomsCmbx.Text },
                 {"Phone", PhoneNumberTbx.Text },
                 {"Price per night", PriceTbx.Text },
-
                 {"Max days limit", MaxDaysTbx.Text },
                 {"Rules", RulesrichTextBox1.Text},
                 {"Longitude", lng},
                 {"Latitude", lat},
                 {"Address", AddressrichTextBox2.Text},
                 {"Description", DescriptionRichTextBox3.Text},
-
-
             };
-                    
-
 
                     List<string> Amenities = new List<string>();
                     foreach (object item in checkedListBox1.Items)
@@ -297,13 +362,11 @@ namespace SmartRentalHub
                         }
                     }
 
-                    Data1.Add("CheckedItems", Amenities);
+                    roomData.Add("CheckedItems", Amenities);
 
-                    
-                    await roomsRef.Document(documentName).SetAsync(Data1);
+                    await roomRef.SetAsync(roomData);
 
-                    MessageBox.Show("Added succesfully!");
-
+                    MessageBox.Show("Added successfully!");
                 }
             }
             catch (Exception ex)

@@ -228,6 +228,39 @@ namespace SmartRentalHub
                 this.NotificationPanel.Visible = true;
                 this.NotificationPanel.BringToFront();
                 this.ProfilePicPanel.Hide();
+
+                var db = FirestoreHelper.database;
+                var userDoc = db.Collection("UserData").Document(MaintainUsername.Username);
+                var userData = userDoc.GetSnapshotAsync().Result.ConvertTo<UserData>();
+
+                // Check if user data is not null
+                if (userData != null)
+                {
+                    // Retrieve apartments that match user preferences
+                    var apartments = db.Collection("SpaceDetails")
+                        .WhereEqualTo("Accommodation", userData.AccomodationPreference)
+                        .WhereEqualTo("Guest", userData.GuestPreference)
+                        .WhereEqualTo("Bed", userData.BedPreference)
+                        .WhereEqualTo("RoomType", userData.RoomTypePreference)
+                        .WhereEqualTo("Bedroom", userData.BedroomPreference)
+                        .WhereEqualTo("BathRoom", userData.BathroomsPreference)
+                        .GetSnapshotAsync().Result.Documents
+                        .Select(doc => doc.ConvertTo<SpaceDetails>())
+                        .ToList();
+
+                    // Display apartments in NotificationPanel
+                    foreach (var apartment in apartments)
+                    {
+                        string message = $"New Apartment: {apartment.NameTitleOfSpace}\nAddress: {apartment.Address}\nPrice: {apartment.Price}\n\n";
+
+                        // Add the message to NotificationPanel
+                        MessageBox.Show(message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("User data not found.");
+                }
             }
 
             else if (this.NotificationPanel.Visible == true)

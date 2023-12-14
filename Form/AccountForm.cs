@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -39,9 +40,11 @@ namespace SmartRentalHub
             ShowLogInSecurity?.Invoke(this, EventArgs.Empty);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void NotificationSetbtn_Click(object sender, EventArgs e)
         {
-
+            NotificationForm NF = new NotificationForm();
+            NF.Show();
+            this.Hide();
         }
     }
 }

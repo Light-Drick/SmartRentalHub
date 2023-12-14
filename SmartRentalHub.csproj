@@ -48,6 +48,9 @@
     <Reference Include="Firebase.Storage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\FirebaseStorage.net.1.0.3\lib\netstandard1.1\Firebase.Storage.dll</HintPath>
     </Reference>
+    <Reference Include="FirebaseAdmin, Version=2.4.0.0, Culture=neutral, PublicKeyToken=97c8d00c348326ed, processorArchitecture=MSIL">
+      <HintPath>packages\FirebaseAdmin.2.4.0\lib\net461\FirebaseAdmin.dll</HintPath>
+    </Reference>
     <Reference Include="FireSharp, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\FireSharp.1.1.0\lib\net45\FireSharp.dll</HintPath>
     </Reference>
@@ -396,6 +399,18 @@
     <Compile Include="Form\LogInForm.Designer.cs">
       <DependentUpon>LogInForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\MaintenanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MaintenanceForm.Designer.cs">
+      <DependentUpon>MaintenanceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\NotificationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\NotificationForm.Designer.cs">
+      <DependentUpon>NotificationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\ProfileForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -415,6 +430,12 @@
       <DependentUpon>LogInSecurityFormm.cs</DependentUpon>
     </Compile>
     <Compile Include="Class\GeocodingHelper.cs" />
+    <Compile Include="Form\ShortRoomDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\ShortRoomDetailsForm.Designer.cs">
+      <DependentUpon>ShortRoomDetailsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ListOfRooms.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -462,8 +483,14 @@
     <EmbeddedResource Include="Form\LogInForm.resx">
       <DependentUpon>LogInForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\MaintenanceForm.resx">
+      <DependentUpon>MaintenanceForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\MapForm.resx">
       <DependentUpon>MapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\NotificationForm.resx">
+      <DependentUpon>NotificationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\ProfileForm.resx">
       <DependentUpon>ProfileForm.cs</DependentUpon>
@@ -473,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\LogInSecurityFormm.resx">
       <DependentUpon>LogInSecurityFormm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\ShortRoomDetailsForm.resx">
+      <DependentUpon>ShortRoomDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListOfRooms.resx">
       <DependentUpon>ListOfRooms.cs</DependentUpon>

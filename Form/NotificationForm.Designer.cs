@@ -40,7 +40,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.AccomodationCmbx = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Notificationbtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -179,14 +179,15 @@
             this.label2.TabIndex = 68;
             this.label2.Text = "Accomodation:";
             // 
-            // button1
+            // Notificationbtn
             // 
-            this.button1.Location = new System.Drawing.Point(355, 281);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(191, 65);
-            this.button1.TabIndex = 76;
-            this.button1.Text = "Notify me of new spaces that consist of these fields:";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Notificationbtn.Location = new System.Drawing.Point(355, 281);
+            this.Notificationbtn.Name = "Notificationbtn";
+            this.Notificationbtn.Size = new System.Drawing.Size(191, 65);
+            this.Notificationbtn.TabIndex = 76;
+            this.Notificationbtn.Text = "Notify me of new spaces that consist of these fields:";
+            this.Notificationbtn.UseVisualStyleBackColor = true;
+            this.Notificationbtn.Click += new System.EventHandler(this.Notificationbtn_Click);
             // 
             // label1
             // 
@@ -203,7 +204,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(991, 510);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Notificationbtn);
             this.Controls.Add(this.BathroomsCmbx);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.BedroomCmbx);
@@ -237,7 +238,7 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.ComboBox AccomodationCmbx;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Notificationbtn;
         private System.Windows.Forms.Label label1;
     }
 }
